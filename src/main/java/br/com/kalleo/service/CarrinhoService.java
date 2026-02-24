@@ -12,7 +12,7 @@ public class CarrinhoService {
     ProdutoRepository produtoRepository;
     PagamentoService pagamentoService;
     double valorPagamento;
-
+    String produtoPago;
     Set<String> produtosDocarrinho = new HashSet<>();
 
 logicaServiceCli cli = new logicaServiceCli();
@@ -36,12 +36,19 @@ logicaServiceCli cli = new logicaServiceCli();
     }
 
     public void fazerCompraDoCarrinho() {
+        // Reduz o estoque de todos os produtos no carrinho
+        System.out.println("\n--- Atualizando estoque ---");
+        for (String nomeProduto : produtosDocarrinho) {
+            produtoRepository.reduzirEstoque(nomeProduto, 1);
+        }
+
         calculandoValor();
     }
 
 
     public double calculandoValor() {
         valorPagamento = 0d;
+
         for (String x : produtosDocarrinho) {
             valorPagamento += produtoRepository.buscandoPorNome(x);
         }
@@ -52,8 +59,13 @@ logicaServiceCli cli = new logicaServiceCli();
         return valorPagamento;
 
     }
+public void produtosCarrinho(){
+        for (String interador: produtosDocarrinho){
+            System.out.println(interador);
+        }
+}
 
-    public void RemoverCarrinho(String recebeItem) {
+    public void removerCarrinho(String recebeItem) {
 
         boolean verificacao = produtosDocarrinho.remove(recebeItem);
         System.out.println("removeu o produto " + recebeItem);

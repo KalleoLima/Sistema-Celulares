@@ -2,7 +2,6 @@ package br.com.kalleo;
 
 import br.com.kalleo.cli.CarrinhoCli;
 import br.com.kalleo.cli.logicaServiceCli;
-import br.com.kalleo.domain.order.StatusPedido;
 import br.com.kalleo.domain.product.Produto;
 import br.com.kalleo.domain.user.Cliente;
 import br.com.kalleo.repository.ProdutoRepository;
@@ -39,21 +38,23 @@ public class App {
 
         cli.setNome(cliente);
 
-        // 5) PagamentoService (injeções: cliente + cli)
-        PagamentoService pagamentoService = new PagamentoService();
-        pagamentoService.setCliente(cliente);
-        pagamentoService.setLogicaService(cli); // <-- precisa existir esse setter no PagamentoService
 
-        // 6) Produto + Repo
+        // 4) Produto + Repo
         Produto addProdutoSamsung = new Produto();
-        addProdutoSamsung.Produtoo("M52 5G", android,2000d,true,500);
+        addProdutoSamsung.produto("M52 5G", android,2000d,true,1);
 
         Produto addProdutoIphone = new Produto();
-        addProdutoIphone.Produtoo("iphone 8", iphone,3000d,true,1000);
+        addProdutoIphone.produto("iphone 8", iphone,3000d,true,1000);
 
         ProdutoRepository repo = new ProdutoRepository();
         repo.addProdutoo(addProdutoSamsung);
         repo.addProdutoo(addProdutoIphone);
+
+        // 6) PagamentoService (injeções: cliente + cli)
+        PagamentoService pagamentoService = new PagamentoService();
+        pagamentoService.setCliente(cliente);
+        pagamentoService.setLogicaService(cli);
+      // falta algo
 
         // 7) ProdutoService
         ProdutoService produtoService = new ProdutoService();
@@ -79,11 +80,6 @@ carrinho.setCli(cli);
         pedido.setLocalizacao(frete.getLocal());
         pedido.setValor(carrinho.getValorPagamento());
 
-        //11) atualizar StatusPedido
-        StatusPedido statusPedido = new StatusPedido();
-statusPedido.setLogicaServiceCli(cli);
-
-
         // menu produto
 
         boolean opcao = true;
@@ -91,19 +87,23 @@ statusPedido.setLogicaServiceCli(cli);
 
       int number = 0;
       System.out.println("escolha opção abaixo");
-      System.out.println("digite 1 para colocar no carrinho");
-      System.out.println("digite 2 para fazer compra do produtos do carrinho");
-      System.out.println("digite 3 para remover produto");
-      System.out.println("digite 4 para sair");
+      System.out.println("digite 1 para vizualizar produtos disponiveis e colocar no carrinho");
+      System.out.println("digite 2 para ver como está os produtos do seu carrinho");
+      System.out.println("digite 3 para fazer compra do produtos do carrinho");
+      System.out.println("digite 4 para remover produto");
+      System.out.println("digite 5 para sair");
 number = input.nextInt();
       if (number == 1){
-          produtoService.ProdutosDisponiveis();
-          carrinhoCli.MetodoParaTestePagamento();
-      }if (number == 2){
-      cli.fazerCompra();
+
+          carrinhoCli.metodoParaTestePagamento();
+
+      }if (number == 2) {
+carrinho.produtosCarrinho();
       }if (number == 3){
+      cli.fazerCompra();
+      }if (number == 4){
 cli.removerProduto();
-      }else if (number == 4 | number > 4){opcao = false;}
+      }else if (number == 5 | number > 5){opcao = false;}
   };
 
 

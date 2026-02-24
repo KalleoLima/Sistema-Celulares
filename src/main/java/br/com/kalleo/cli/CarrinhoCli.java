@@ -27,13 +27,13 @@ public class CarrinhoCli {
 
     }
 
-    public void MetodoParaTestePagamento() {
-        System.out.println(" Produtos disponiveis: ");
-        Produto[] ProdutoRepository = new Produto[0];
-        for (Produto X : ProdutoRepository){
-System.out.println(X.getNameProduto() +  "-" + X.getCategoria());
-        }
+    public void metodoParaTestePagamento() {
 
+
+        System.out.println("Produtos disponiveis: ");
+
+        produtoService.produtosDisponiveis();
+        System.out.println();
         System.out.println("Digite o nome do produto que você quer:");
         String resposta = input.nextLine();
 

@@ -6,6 +6,7 @@ import br.com.kalleo.service.FreteService;
 import br.com.kalleo.service.PedidoService;
 
 
+import java.io.*;
 import java.util.Scanner;
 
 public class logicaServiceCli {
@@ -50,9 +51,14 @@ public class logicaServiceCli {
         double precototalComfrete = carrinhoService.getValorPagamento() + 3;
         System.out.println("localização de entrega: " + frete.getLocal());
         System.out.println("nome do cliente: " + nome.getName());
-        System.out.println("preço do produto com frete: " + precototalComfrete );
+        System.out.println("preço do produto com frete: " + precototalComfrete);
+        System.out.println("nome do produto: " + carrinhoService.getProdutosDocarrinho());
 
-
+      try {
+          salvandoPedidos();
+      } catch (IOException e) {
+          throw new RuntimeException(e.getCause());
+      }
   }
 
 
@@ -63,24 +69,64 @@ public class logicaServiceCli {
     public void fazerCompra(){
 
 if ( carrinhoService.getProdutosDocarrinho().size() > 0){
-        System.out.println("por segurança queremos fazer a confirmação. \n digite 'fazer compra' " );
+        System.out.println("por segurança queremos fazer a confirmação. \ndigite 'fazer compra' " );
         String decisao = input.nextLine();
         if (decisao.equalsIgnoreCase("fazer compra")){
             System.out.println("processando pagamento");
-            double total = carrinhoService.calculandoValor();
+            
+            // Reduz estoque e calcula valor
+            carrinhoService.fazerCompraDoCarrinho();
+            double total = carrinhoService.getValorPagamento();
+            
         System.out.println( "valor total dos produto: " + total);
 pago();}
         } else  {System.out.println("o carrinho está vazio!" );return;}
     }
 
 public void removerProduto(){
-        System.out.println("digite o nome do produto que você quer remover: ");
+        System.out.println("se voce realmente quer remover produto, digite 'remover' ");
     String decisao = input.nextLine();
   if (decisao.equalsIgnoreCase("remover")){
         System.out.println("digite o produto que voce quer remover do carrinho");
         String nameObjeto = input.nextLine();
-        carrinhoService.RemoverCarrinho(nameObjeto);};
+        carrinhoService.removerCarrinho(nameObjeto);};
 }
+
+// salvar em arquivos
+    public void salvandoPedidos() throws IOException {
+        PrintWriter pw = new PrintWriter(System.out);
+        File f = new File("StatusPedidos");
+        BufferedWriter bw = new BufferedWriter(new FileWriter(f.getName(),true));
+        double precototalComfrete = carrinhoService.getValorPagamento() + 3;
+        String papel = "";
+        for (String carrin : carrinhoService.getProdutosDocarrinho()){
+            System.out.println(carrin);
+         papel = carrin;
+        }
+        bw.newLine();
+        bw.write("nome do Cliente: " + nome.getName());
+        bw.newLine();
+
+        bw.write("preço total do produto: $" + precototalComfrete);
+        bw.newLine();
+
+        bw.write("localização: "+frete.getLocal());
+        bw.newLine();
+
+
+
+bw.write("nome do produto: " + papel);
+
+            System.out.printf("aquivo %s foi aberto, check ele assim que terminar execução ",f.getName() );
+            bw.flush();
+            bw.close();
+
+
+
+    }
+
+
+
 
 
 

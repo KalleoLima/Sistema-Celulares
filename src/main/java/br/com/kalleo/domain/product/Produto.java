@@ -15,7 +15,7 @@ public class Produto {
 
 
 
-    public void  Produtoo(String nameProduto, Categorias.categorias categoria, double preco, boolean disponibilidade, int estoque) {
+    public void  produto(String nameProduto, Categorias.categorias categoria, double preco, boolean disponibilidade, int estoque) {
 
         if (this.estoque < 0 && preco < 0){
             this.disponibilidade = false;
@@ -73,6 +73,8 @@ public class Produto {
     public void setDisponibilidade(boolean disponibilidade) {
         this.disponibilidade = disponibilidade;
     }
+
+
 
     public int getEstoque() {
         return estoque;

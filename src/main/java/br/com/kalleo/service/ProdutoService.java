@@ -19,9 +19,9 @@ public class ProdutoService {
 //    }
 
 
-     public void ProdutosDisponiveis(){
+     public void produtosDisponiveis(){
         produtoRepository.getProdutos().stream()
-                .filter(p -> p.getEstoque() > 1)
+                .filter(p -> p.getEstoque() >= 1)
                 .filter(Produto::isDisponibilidade)
                 .forEach(p -> System.out.println(p.getNameProduto()));
     }
